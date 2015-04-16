@@ -49,7 +49,7 @@
       $longitude = $centroid->labelPoints[0]->x;
 
       ArelXMLHelper::outputObject(ArelXMLHelper::createLocationBasedPOI(
-        $id,
+        $id++,
         $name,
         array($latitude, $longitude, 0),
         './resources/thumb_a1.png',
