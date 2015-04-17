@@ -24,26 +24,35 @@
   }
 
   $arcgis_url = 'http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/MapServer/0';
-  $service_url = "http://arc01.gis.vt.edu/arcgis/rest/services/Utilities/Geometry/GeometryServer";
+  $geometry_service_url = "http://arc01.gis.vt.edu/arcgis/rest/services/Utilities/Geometry/GeometryServer";
   $label_points_url = "/labelPoints";
   $projection_url = "/project";
-  $arcgis_query = "/query?";
+  $arcgis_query_url = "/query?";
   $inSR = 102747;
   $outSR = 4326;
+  $where_clause = "BLDG_NUM IS NOT NULL AND BLDG_NUM <> ' ' AND URL IS NOT NULL";
+  $outFields = "NAME,URL";
 
   ArelXMLHelper::start(NULL, "./arel/index.html", ArelXMLHelper::TRACKING_GPS);
 
-  $json = make_http_request($arcgis_url . $arcgis_query, CURLOPT_HTTPGET,
-                            array('where' => "BLDG_NUM IS NOT NULL AND BLDG_NUM <> ' ' AND URL IS NOT NULL", 'f' => 'json', 'inSR' => $inSR, 'outSR' => $outSR));
+  $json = make_http_request($arcgis_url . $arcgis_query_url, CURLOPT_HTTPGET,
+    array(
+      'where' => $where_clause,
+      'f' => 'json',
+      'inSR' => $inSR,
+      'outSR' => $outSR,
+      'outFields' => $outFields
+    ));
 
   $id = 0;
 
   foreach ($json->features as $building) {
     $name = $building->attributes->NAME;
+    $url = $building->attributes->URL;
     $geometry = json_encode(array($building->geometry));
 
     if (empty($name) == FALSE) {
-      $centroid = make_http_request($service_url . $label_points_url, CURLOPT_POST,
+      $centroid = make_http_request($geometry_service_url . $label_points_url, CURLOPT_POST,
                                     array( 'polygons' => $geometry, 'sr' => $outSR, 'f' => 'json'));
       $latitude = $centroid->labelPoints[0]->y;
       $longitude = $centroid->labelPoints[0]->x;
@@ -55,7 +64,7 @@
         './resources/thumb_a1.png',
         './resources/icon_a1.png',
         $name,
-        array()
+        array(array("Visit website", "website-link", $url))
       ));
     }
   }
