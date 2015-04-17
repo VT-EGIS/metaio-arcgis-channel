@@ -34,7 +34,7 @@
   ArelXMLHelper::start(NULL, "./arel/index.html", ArelXMLHelper::TRACKING_GPS);
 
   $json = make_http_request($arcgis_url . $arcgis_query, CURLOPT_HTTPGET,
-                            array('where' => '1=1', 'f' => 'json', 'inSR' => $inSR, 'outSR' => $outSR));
+                            array('where' => "BLDG_NUM IS NOT NULL AND BLDG_NUM <> ' ' AND URL IS NOT NULL", 'f' => 'json', 'inSR' => $inSR, 'outSR' => $outSR));
 
   $id = 0;
 
