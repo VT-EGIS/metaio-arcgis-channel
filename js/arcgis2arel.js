@@ -48,6 +48,11 @@ require([
       poi.setThumbnail('./resources/thumb_a1.png');
       poi.setIcon('./resources/icon_a1.png');
 
+      poi.setPopup(new arel.Popup({
+        buttons: [ new arel.PopupButton('Visit website', 'visit-website', feature.url) ],
+        description: feature.name
+      }));
+
       arel.Scene.addObject(poi);
     });
   };
