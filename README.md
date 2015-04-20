@@ -1,4 +1,4 @@
 Dependencies
 ------------
 
-1. [HttpRequest](http://php.net/manual/en/http.install.php)
+1. [Junaio API Helper Library (php)](https://github.com/metaio/junaio-php-helper-library)
