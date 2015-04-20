@@ -25,7 +25,7 @@ require([
         name : feature.attributes.NAME,
         url : feature.attributes.URL,
         geometry: feature.geometry
-      }
+      };
     });
   };
 
@@ -75,7 +75,7 @@ require([
   };
 
   init = function () {
-    var queryTask, geometryServiceUrl;
+    var queryTask;
 
     queryTask = new QueryTask('http://arcgis-central.gis.vt.edu/arcgis/rest/services/vtcampusmap/Buildings/MapServer/0/');
 
